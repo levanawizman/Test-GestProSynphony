@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - GestTravaux Pro{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    {# Welcome header #}
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3">
+                <i class="bi bi-house-door"></i> Tableau de bord
+            </h1>
+            <p class="text-muted">
+                Bienvenue {{ inspecteur.prenomInspecteur }} {{ inspecteur.nomInspecteur }}
+                <small class="d-block">Secteur: {{ inspecteur.secteurInspecteur }}</small>
+            </p>
+        </div>
+    </div>
+
+    {# Statistics cards #}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted mb-0">En attente</h5>
+                            <h2 class="mb-0">{{ stats.pending }}</h2>
+                        </div>
+                        <div class="text-warning">
+                            <i class="bi bi-clock-history" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted mb-0">En cours</h5>
+                            <h2 class="mb-0">{{ stats.in_progress }}</h2>
+                        </div>
+                        <div class="text-primary">
+                            <i class="bi bi-hammer" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted mb-0">Terminés</h5>
+                            <h2 class="mb-0">{{ stats.completed }}</h2>
+                        </div>
+                        <div class="text-success">
+                            <i class="bi bi-check-circle" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Chantiers list #}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-building"></i> Mes Chantiers Assignés
+                    </h5>
+                    <span class="badge bg-light text-dark">{{ chantiers|length }} chantier(s)</span>
+                </div>
+                <div class="card-body p-0">
+                    {% if chantiers is empty %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox display-1 text-muted"></i>
+                            <p class="text-muted mt-3">Aucun chantier assigné pour le moment</p>
+                        </div>
+                    {% else %}
+                        <div class="list-group list-group-flush">
+                            {% for chantier in chantiers %}
+                                <a href="{{ path('inspecteur_chantier_detail', {id: chantier.id}) }}"
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">
+                                                <i class="bi bi-geo-alt"></i> {{ chantier.fullAddress }}
+                                            </h6>
+                                            {% if chantier.infoChantier %}
+                                                <p class="mb-1 text-muted small">{{ chantier.infoChantier }}</p>
+                                            {% endif %}
+                                            {% if chantier.bien %}
+                                                <small class="text-muted">
+                                                    <i class="bi bi-house"></i> Bien: {{ chantier.bien.fullAddress }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="text-end ms-3">
+                                            <span class="{{ chantier.statutBadgeClass }}">
+                                                {{ chantier.statutLabel }}
+                                            </span>
+                                            <div class="mt-2">
+                                                <i class="bi bi-chevron-right text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Quick actions #}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning"></i> Actions rapides
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="{{ path('inspecteur_chantiers_list') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-list-ul"></i> Voir tous les chantiers
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

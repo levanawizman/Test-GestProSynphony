@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.immosync.gesttravaux.controllers.BienController" styleClass="main-container">
+    <top><VBox spacing="10"><Label text="Gestion des Biens" styleClass="label-header"/><Separator/>
+            <HBox spacing="10" styleClass="tool-bar"><Button text="Nouveau" onAction="#handleNew" styleClass="button-success"/>
+                <Button text="Modifier" onAction="#handleEdit" styleClass="button"/><Button text="Supprimer" onAction="#handleDelete" styleClass="button-danger"/>
+                <Region HBox.hgrow="ALWAYS"/><TextField fx:id="searchField" promptText="Rechercher..." prefWidth="250"/>
+                <Button text="Rechercher" onAction="#handleSearch"/><Button text="Actualiser" onAction="#handleRefresh"/>
+            </HBox></VBox></top>
+    <center><SplitPane dividerPositions="0.6">
+            <VBox spacing="10" styleClass="spacing-medium"><padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <TableView fx:id="bienTable" VBox.vgrow="ALWAYS"><columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/><TableColumn fx:id="adresseColumn" text="Adresse" prefWidth="200"/>
+                        <TableColumn fx:id="villeColumn" text="Ville" prefWidth="150"/><TableColumn fx:id="proprietaireColumn" text="Propriétaire" prefWidth="200"/>
+                    </columns></TableView></VBox>
+            <VBox spacing="15" styleClass="form-container"><padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <Label text="Détails du Bien" styleClass="label-subheader"/><Separator/>
+                <GridPane hgap="10" vgap="15"><columnConstraints><ColumnConstraints minWidth="100" prefWidth="120"/><ColumnConstraints hgrow="ALWAYS"/></columnConstraints>
+                    <Label text="Adresse *" GridPane.rowIndex="0" GridPane.columnIndex="0"/><TextField fx:id="adresseField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label text="Ville *" GridPane.rowIndex="1" GridPane.columnIndex="0"/><TextField fx:id="villeField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="Propriétaire *" GridPane.rowIndex="2" GridPane.columnIndex="0"/><ComboBox fx:id="proprietaireCombo" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="300"/>
+                </GridPane><Region VBox.vgrow="ALWAYS"/>
+                <HBox spacing="10"><Button text="Enregistrer" onAction="#handleSave" styleClass="button-success" prefWidth="120"/><Button text="Annuler" onAction="#handleCancel" prefWidth="120"/></HBox>
+                <Label text="* Champs obligatoires" style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/></VBox>
+        </SplitPane></center>
+</BorderPane>

@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chantier #{{ chantier.id }} - GestTravaux Pro{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    {# Breadcrumb #}
+    <div class="row mb-3">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ path('inspecteur_dashboard') }}">Tableau de bord</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ path('inspecteur_chantiers_list') }}">Chantiers</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Chantier #{{ chantier.id }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    {# Header #}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1 class="h3">
+                        <i class="bi bi-building"></i> Chantier #{{ chantier.id }}
+                    </h1>
+                    <p class="text-muted mb-0">{{ chantier.fullAddress }}</p>
+                </div>
+                <span class="{{ chantier.statutBadgeClass }}" style="font-size: 1rem;">
+                    {{ chantier.statutLabel }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {# Left column - Information #}
+        <div class="col-lg-6">
+            {# Chantier information card #}
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle"></i> Informations du chantier
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Adresse:</dt>
+                        <dd class="col-sm-8">{{ chantier.fullAddress }}</dd>
+
+                        {% if chantier.infoChantier %}
+                            <dt class="col-sm-4">Informations:</dt>
+                            <dd class="col-sm-8">{{ chantier.infoChantier }}</dd>
+                        {% endif %}
+
+                        <dt class="col-sm-4">Statut:</dt>
+                        <dd class="col-sm-8">
+                            <span class="{{ chantier.statutBadgeClass }}">
+                                {{ chantier.statutLabel }}
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4">Inspecteur:</dt>
+                        <dd class="col-sm-8">{{ chantier.inspecteur.fullName }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            {# Bien information card #}
+            {% if chantier.bien %}
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-house"></i> Informations du bien
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Adresse:</dt>
+                            <dd class="col-sm-8">{{ chantier.bien.fullAddress }}</dd>
+
+                            {% if chantier.bien.proprietaire %}
+                                <dt class="col-sm-4">Propriétaire:</dt>
+                                <dd class="col-sm-8">{{ chantier.bien.proprietaire }}</dd>
+
+                                <dt class="col-sm-4">Contact:</dt>
+                                <dd class="col-sm-8">
+                                    <i class="bi bi-envelope"></i> {{ chantier.bien.proprietaire.emailProprietaire }}<br>
+                                    <i class="bi bi-telephone"></i> {{ chantier.bien.proprietaire.telProprietaire }}
+                                </dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Devis and Prestations #}
+            {% if chantier.devis|length > 0 %}
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-file-text"></i> Devis et Prestations
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            {% for devi in chantier.devis %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ devi.prestation.libelle }}</h6>
+                                        <strong class="text-success">{{ devi.formattedPrice }}</strong>
+                                    </div>
+                                    <p class="mb-1">
+                                        <span class="badge bg-secondary">
+                                            {{ devi.prestation.categorie.type }}
+                                        </span>
+                                    </p>
+                                    <small class="text-muted">
+                                        <i class="bi bi-person"></i> {{ devi.entrepreneur }}<br>
+                                        <i class="bi bi-clock"></i> Durée: {{ devi.duree }}
+                                    </small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {# Right column - Map and Actions #}
+        <div class="col-lg-6">
+            {# Map card #}
+            {% if chantier.bien and chantier.bien.latitude and chantier.bien.longitude %}
+                <div class="card mb-3">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="bi bi-map"></i> Localisation du bien
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 400px; width: 100%;"></div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Actions card #}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning"></i> Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('inspecteur_add_observation', {chantierId: chantier.id}) }}"
+                           class="btn btn-success btn-lg">
+                            <i class="bi bi-camera"></i> Ajouter une observation (photo)
+                        </a>
+                        <a href="{{ path('inspecteur_upload_document', {chantierId: chantier.id}) }}"
+                           class="btn btn-info btn-lg">
+                            <i class="bi bi-file-earmark-pdf"></i> Télécharger un document PDF
+                        </a>
+                        <a href="{{ path('inspecteur_chantiers_list') }}"
+                           class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if chantier.bien and chantier.bien.latitude and chantier.bien.longitude %}
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([{{ chantier.bien.latitude }}, {{ chantier.bien.longitude }}], 15);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add marker for the property
+        const marker = L.marker([{{ chantier.bien.latitude }}, {{ chantier.bien.longitude }}]).addTo(map);
+        marker.bindPopup('<b>{{ chantier.bien.fullAddress|escape('js') }}</b>').openPopup();
+
+        // Make map responsive
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    </script>
+    {% endif %}
+{% endblock %}

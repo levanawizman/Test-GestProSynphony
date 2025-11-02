@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//mnt/c/Users/**)",
+      "Read(//tmp/**)",
+      "Bash(chmod:*)",
+      "Bash(tree:*)",
+      "Bash(zip:*)",
+      "Bash(tar:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

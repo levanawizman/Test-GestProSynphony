@@ -1,0 +1,206 @@
+/**
+ * GestTravaux Pro - Custom Styles
+ * Mobile-first responsive design
+ */
+
+/* Root variables */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+}
+
+/* Mobile-first base styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Touch-friendly buttons */
+.btn {
+    min-height: 44px; /* iOS minimum touch target */
+    padding: 0.5rem 1rem;
+}
+
+.btn-lg {
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Card improvements */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile-optimized navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Map container */
+#map {
+    border-radius: 0.5rem;
+    z-index: 1;
+}
+
+/* Form improvements */
+.form-control,
+.form-select {
+    min-height: 44px;
+    font-size: 16px; /* Prevent iOS zoom on focus */
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+/* File input styling */
+input[type="file"] {
+    cursor: pointer;
+}
+
+/* List group improvements */
+.list-group-item {
+    transition: background-color 0.2s;
+}
+
+.list-group-item-action:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Badge improvements */
+.badge {
+    padding: 0.5em 0.75em;
+    font-size: 0.875em;
+}
+
+/* Loading spinner */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+/* Photo preview */
+#photoPreview img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* Sticky footer */
+footer {
+    margin-top: auto;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    h1, .h1 {
+        font-size: 1.75rem;
+    }
+
+    h2, .h2 {
+        font-size: 1.5rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    /* Make tables responsive */
+    .table-responsive {
+        border: 0;
+    }
+}
+
+/* PWA install prompt */
+.pwa-install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    max-width: 90%;
+}
+
+/* Offline indicator */
+.offline-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--warning-color);
+    color: #000;
+    text-align: center;
+    padding: 0.5rem;
+    z-index: 9999;
+    display: none;
+}
+
+.offline-indicator.show {
+    display: block;
+}
+
+/* Camera button special styling */
+.btn-camera {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    border: none;
+    color: white;
+}
+
+.btn-camera:hover {
+    background: linear-gradient(135deg, #20c997, var(--success-color));
+}
+
+/* Status badges with icons */
+.badge i {
+    margin-right: 0.25rem;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .btn,
+    footer,
+    .no-print {
+        display: none !important;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
+}
